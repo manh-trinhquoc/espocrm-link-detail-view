@@ -1,0 +1,13 @@
+{
+    "module": "LinkDetailView",
+    "name": "Link Detail View",
+    "description": "Show detail of a link field in the same view.",
+    "author": "manhtq",
+    "bundled": false,
+    "acceptableVersions": [
+        ">=7.3.0"
+    ],
+    "php": [
+        ">=7.2"
+    ]
+}
