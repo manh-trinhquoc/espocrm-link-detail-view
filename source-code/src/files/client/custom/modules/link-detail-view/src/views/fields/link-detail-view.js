@@ -64,6 +64,13 @@ class LinkDetailView extends LinkFieldView {
     createForeignView(model, options = {}) {
         console.log("createForeignView")
         console.log(options)
+        console.log(this.readOnly);
+        console.log(this.mode);
+        console.log('isReadMode', this.isReadMode());
+        console.log('isListMode', this.isListMode());
+        console.log('isDetailMode', this.isDetailMode());
+        console.log('isEditMode', this.isEditMode());
+        console.log('isSearchMode', this.isSearchMode());
         let scope = this.foreignScope;
         let convertEntityViewName = this.getMetadata()
             .get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
@@ -72,7 +79,6 @@ class LinkDetailView extends LinkFieldView {
         let parentId = this.model.get('id');
         this.createView('recordDetail', convertEntityViewName, {
             model: model,
-            buttonsDisabled: true,
             layoutName: 'detail',
             exit: () => {
                 console.log("exit");
@@ -82,6 +88,18 @@ class LinkDetailView extends LinkFieldView {
             bottomDisabled: true,
             portalLayoutDisabled: true,
             fullSelector: '#main .link-detail-view.parent-' + parentScope + '-' + parentId,
+            // buttonsDisabled: true,
+            buttonsDisabled: false,
+            // buttonList
+            // dropdownItemList
+            // buttonEditList
+            //dropdownEditItemList
+            //editModeDisabled
+            // confirmLeaveDisabled
+            // readOnly
+            // inlineEditDisabled
+            // navigateButtonsDisabled
+            //focusForCreate
         }, view => {
             view.render().then(() => {
                 view.$el.find('.middle-tabs > button').click((e) => {

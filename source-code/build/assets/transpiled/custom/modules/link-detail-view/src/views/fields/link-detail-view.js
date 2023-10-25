@@ -55,8 +55,16 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
         });
       });
     }
-    createForeignView(model) {
+    createForeignView(model, options = {}) {
       console.log("createForeignView");
+      console.log(options);
+      console.log(this.readOnly);
+      console.log(this.mode);
+      console.log('isReadMode', this.isReadMode());
+      console.log('isListMode', this.isListMode());
+      console.log('isDetailMode', this.isDetailMode());
+      console.log('isEditMode', this.isEditMode());
+      console.log('isSearchMode', this.isSearchMode());
       let scope = this.foreignScope;
       let convertEntityViewName = this.getMetadata().get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
       // .get(['clientDefs', scope, 'recordViews', 'edit']) || 'views/record/edit';
@@ -64,7 +72,8 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
       let parentId = this.model.get('id');
       this.createView('recordDetail', convertEntityViewName, {
         model: model,
-        buttonsDisabled: true,
+        // buttonsDisabled: true,
+        buttonsDisabled: false,
         layoutName: 'detail',
         exit: () => {
           console.log("exit");
