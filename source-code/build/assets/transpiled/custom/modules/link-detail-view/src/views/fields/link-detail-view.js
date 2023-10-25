@@ -64,7 +64,6 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
       let parentId = this.model.get('id');
       this.createView('recordDetail', convertEntityViewName, {
         model: model,
-        buttonsPosition: false,
         buttonsDisabled: true,
         layoutName: 'detail',
         exit: () => {

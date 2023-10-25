@@ -61,8 +61,9 @@ class LinkDetailView extends LinkFieldView {
 
     }
 
-    createForeignView(model) {
+    createForeignView(model, options = {}) {
         console.log("createForeignView")
+        console.log(options)
         let scope = this.foreignScope;
         let convertEntityViewName = this.getMetadata()
             .get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
@@ -71,7 +72,6 @@ class LinkDetailView extends LinkFieldView {
         let parentId = this.model.get('id');
         this.createView('recordDetail', convertEntityViewName, {
             model: model,
-            buttonsPosition: false,
             buttonsDisabled: true,
             layoutName: 'detail',
             exit: () => {
