@@ -61,9 +61,7 @@ class LinkDetailView extends LinkFieldView {
 
     }
 
-    createForeignView(model, options = {}) {
-        console.log("createForeignView")
-        console.log(options)
+    createForeignView(model) {
         console.log(this.readOnly);
         console.log(this.mode);
         console.log('isReadMode', this.isReadMode());
@@ -77,7 +75,7 @@ class LinkDetailView extends LinkFieldView {
         // .get(['clientDefs', scope, 'recordViews', 'edit']) || 'views/record/edit';
         let parentScope = Espo.Utils.toDom(this.model.entityType);
         let parentId = this.model.get('id');
-        this.createView('recordDetail', convertEntityViewName, {
+        let option = {
             model: model,
             layoutName: 'detail',
             exit: () => {
@@ -88,19 +86,20 @@ class LinkDetailView extends LinkFieldView {
             bottomDisabled: true,
             portalLayoutDisabled: true,
             fullSelector: '#main .link-detail-view.parent-' + parentScope + '-' + parentId,
-            // buttonsDisabled: true,
             buttonsDisabled: false,
-            // buttonList
-            // dropdownItemList
+            // buttonList:['edit']
             // buttonEditList
-            //dropdownEditItemList
+            dropdownEditItemList: [],
             //editModeDisabled
             // confirmLeaveDisabled
             // readOnly
             // inlineEditDisabled
             // navigateButtonsDisabled
             //focusForCreate
-        }, view => {
+        };
+        this.createView('recordDetail', convertEntityViewName, option, view => {
+            view.dropdownItemList = [];
+            console.log(view);
             view.render().then(() => {
                 view.$el.find('.middle-tabs > button').click((e) => {
                     let tab = parseInt($(e.currentTarget).attr('data-tab'));
