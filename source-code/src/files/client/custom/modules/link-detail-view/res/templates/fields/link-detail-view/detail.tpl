@@ -11,4 +11,4 @@
 	{{/if}}
 {{/if}}
 
-<div style="padding:5px" class="link-detail-view-{{scopeValue}}-{{idValue}}"></div>
+<div style="padding:5px" class="link-detail-view parent-{{parentScope}}-{{parentId}}"></div>

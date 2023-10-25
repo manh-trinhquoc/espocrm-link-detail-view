@@ -10,37 +10,33 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
   console.log("LinkDetailView");
   class LinkDetailView extends _link.default {
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
-    /** @inheritDoc */
-    editTemplate = 'fields/link/edit';
+    // editTemplate = 'fields/link/edit';
+    editTemplate = 'link-detail-view:fields/link-detail-view/edit';
     data() {
-      let scopeValue = Espo.Utils.toDom(this.foreignScope);
+      let parentScope = Espo.Utils.toDom(this.model.entityType);
       return {
         ...super.data(),
-        scopeValue: scopeValue
+        parentId: this.model.get('id'),
+        parentScope: parentScope
       };
     }
-    events = {
-      /** @this LinkFieldView */
-      'auxclick a[href]:not([role="button"])': function (e) {
-        if (!this.isReadMode()) {
-          return;
-        }
-        let isCombination = e.button === 1 && (e.ctrlKey || e.metaKey);
-        if (!isCombination) {
-          return;
-        }
-        e.preventDefault();
-        e.stopPropagation();
-        this.quickView();
-      }
-    };
     setup() {
       super.setup.call(this);
+      this.listenTo(this.model, 'change:' + this.idName, this.getForeignModel);
+    }
+
+    // Called after contents is added to the DOM.
+    afterRender() {
+      super.afterRender();
       this.getForeignModel();
     }
     getForeignModel() {
       let scope = this.foreignScope;
       let id = this.model.get(this.idName);
+      if (!id) {
+        this.clearView('recordDetail');
+        return;
+      }
       if (this.getMetadata().get(['scopes', scope, 'disabled'])) {
         return;
       }
@@ -51,33 +47,40 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
         // get params
       }).then(data => {
         this.getModelFactory().create(scope, model => {
-          // console.log("model", model);
           model.populateDefaults();
           model.set(data || {}, {
             silent: true
           });
-          let convertEntityViewName = this.getMetadata().get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
-          // .get(['clientDefs', scope, 'recordViews', 'edit']) || 'views/record/edit';
-
-          this.createView('recordDetail', convertEntityViewName, {
-            model: model,
-            buttonsPosition: false,
-            buttonsDisabled: true,
-            layoutName: 'detail',
-            exit: () => {},
-            isWide: true,
-            sideDisabled: true,
-            bottomDisabled: true,
-            portalLayoutDisabled: true,
-            fullSelector: '#main .link-detail-view-' + Espo.Utils.toDom(scope) + '-' + id
-          }, view => {
-            view.render().then(() => {
-              view.$el.find('.middle-tabs > button').click(e => {
-                let tab = parseInt($(e.currentTarget).attr('data-tab'));
-                view.selectTab(tab);
-                e.stopPropagation();
-              });
-            });
+          this.createForeignView(model);
+        });
+      });
+    }
+    createForeignView(model) {
+      console.log("createForeignView");
+      let scope = this.foreignScope;
+      let convertEntityViewName = this.getMetadata().get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
+      // .get(['clientDefs', scope, 'recordViews', 'edit']) || 'views/record/edit';
+      let parentScope = Espo.Utils.toDom(this.model.entityType);
+      let parentId = this.model.get('id');
+      this.createView('recordDetail', convertEntityViewName, {
+        model: model,
+        buttonsPosition: false,
+        buttonsDisabled: true,
+        layoutName: 'detail',
+        exit: () => {
+          console.log("exit");
+        },
+        isWide: true,
+        sideDisabled: true,
+        bottomDisabled: true,
+        portalLayoutDisabled: true,
+        fullSelector: '#main .link-detail-view.parent-' + parentScope + '-' + parentId
+      }, view => {
+        view.render().then(() => {
+          view.$el.find('.middle-tabs > button').click(e => {
+            let tab = parseInt($(e.currentTarget).attr('data-tab'));
+            view.selectTab(tab);
+            e.stopPropagation();
           });
         });
       });
