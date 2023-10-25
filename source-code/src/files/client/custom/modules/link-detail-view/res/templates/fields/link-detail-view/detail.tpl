@@ -10,7 +10,5 @@
 		<span class="loading-value">...</span>
 	{{/if}}
 {{/if}}
-<p>link-detail-view:fields/link-detail-view/detail</p>
-<div class="link-detail-view-{{foreignScope}}-{{idValue}}">
-	{{{ recordDetail }}}
-</div>
+
+<div style="padding:5px" class="link-detail-view-{{scopeValue}}-{{idValue}}"></div>

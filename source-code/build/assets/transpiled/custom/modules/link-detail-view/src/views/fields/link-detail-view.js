@@ -1,4 +1,4 @@
-define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "views/fields/link", "helpers/record-modal"], function (_exports, _link, _recordModal) {
+define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "views/fields/link"], function (_exports, _link) {
   "use strict";
 
   Object.defineProperty(_exports, "__esModule", {
@@ -6,21 +6,39 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
   });
   _exports.default = void 0;
   _link = _interopRequireDefault(_link);
-  _recordModal = _interopRequireDefault(_recordModal);
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-  // import BaseFieldView from 'views/fields/base';
-
   console.log("LinkDetailView");
   class LinkDetailView extends _link.default {
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
     /** @inheritDoc */
     editTemplate = 'fields/link/edit';
+    data() {
+      let scopeValue = Espo.Utils.toDom(this.foreignScope);
+      return {
+        ...super.data(),
+        scopeValue: scopeValue
+      };
+    }
+    events = {
+      /** @this LinkFieldView */
+      'auxclick a[href]:not([role="button"])': function (e) {
+        if (!this.isReadMode()) {
+          return;
+        }
+        let isCombination = e.button === 1 && (e.ctrlKey || e.metaKey);
+        if (!isCombination) {
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        this.quickView();
+      }
+    };
     setup() {
       super.setup.call(this);
       this.getForeignModel();
     }
     getForeignModel() {
-      let leadModel = this.model;
       let scope = this.foreignScope;
       let id = this.model.get(this.idName);
       if (this.getMetadata().get(['scopes', scope, 'disabled'])) {
@@ -33,7 +51,7 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
         // get params
       }).then(data => {
         this.getModelFactory().create(scope, model => {
-          console.log("model", model);
+          // console.log("model", model);
           model.populateDefaults();
           model.set(data || {}, {
             silent: true
@@ -45,13 +63,21 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
             model: model,
             buttonsPosition: false,
             buttonsDisabled: true,
-            layoutName: 'detailConvert',
-            exit: () => {}
+            layoutName: 'detail',
+            exit: () => {},
+            isWide: true,
+            sideDisabled: true,
+            bottomDisabled: true,
+            portalLayoutDisabled: true,
+            fullSelector: '#main .link-detail-view-' + Espo.Utils.toDom(scope) + '-' + id
           }, view => {
-            // this.wait(false);
-            console.log("detailConvert");
-            console.log("view", view);
-            this.reRender();
+            view.render().then(() => {
+              view.$el.find('.middle-tabs > button').click(e => {
+                let tab = parseInt($(e.currentTarget).attr('data-tab'));
+                view.selectTab(tab);
+                e.stopPropagation();
+              });
+            });
           });
         });
       });
