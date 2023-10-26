@@ -10,5 +10,4 @@
 		<span class="loading-value">...</span>
 	{{/if}}
 {{/if}}
-
-<div style="padding:5px" class="link-detail-view parent-{{parentScope}}-{{parentId}}"></div>
+<div style="padding:5px" class="link-detail-view field-{{fieldName}}"></div>

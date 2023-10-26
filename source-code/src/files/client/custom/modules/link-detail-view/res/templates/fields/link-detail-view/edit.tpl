@@ -16,4 +16,4 @@
 </div>
 <input type="hidden" data-name="{{idName}}" value="{{idValue}}">
 
-<div style="padding:5px; position:relative;" class="link-detail-view parent-{{parentScope}}-{{parentId}}"></div>
+<div style="padding:5px; position:relative;" class="link-detail-view field-{{fieldName}}"></div>

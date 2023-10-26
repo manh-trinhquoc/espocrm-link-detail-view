@@ -13,11 +13,9 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
     // editTemplate = 'fields/link/edit';
     editTemplate = 'link-detail-view:fields/link-detail-view/edit';
     data() {
-      let parentScope = Espo.Utils.toDom(this.model.entityType);
       return {
         ...super.data(),
-        parentId: this.model.get('id'),
-        parentScope: parentScope
+        fieldName: Espo.Utils.toDom(this.idName)
       };
     }
     setup() {
@@ -56,18 +54,23 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
       });
     }
     createForeignView(model) {
-      console.log(this.readOnly);
-      console.log(this.mode);
-      console.log('isReadMode', this.isReadMode());
-      console.log('isListMode', this.isListMode());
-      console.log('isDetailMode', this.isDetailMode());
-      console.log('isEditMode', this.isEditMode());
-      console.log('isSearchMode', this.isSearchMode());
+      let sideDisabled = true;
+      let bottomDisabled = true;
+      let readOnly = false;
+      let editModeDisabled = false;
+      let inlineEditDisabled = false;
+      let buttonsDisabled = false;
+      if (this.readOnly || this.isEditMode() || this.isSearchMode() || this.isListMode()) {
+        readOnly = true;
+      }
+      // console.log('isReadMode', this.isReadMode());
+      // console.log('isListMode', this.isListMode());
+      // console.log('isDetailMode', this.isDetailMode());
+      // console.log('isEditMode', this.isEditMode());
+      // console.log('isSearchMode', this.isSearchMode());
       let scope = this.foreignScope;
       let convertEntityViewName = this.getMetadata().get(['clientDefs', scope, 'recordViews', 'detail']) || 'views/record/detail';
       // .get(['clientDefs', scope, 'recordViews', 'edit']) || 'views/record/edit';
-      let parentScope = Espo.Utils.toDom(this.model.entityType);
-      let parentId = this.model.get('id');
       let option = {
         model: model,
         layoutName: 'detail',
@@ -75,22 +78,15 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
           console.log("exit");
         },
         isWide: true,
-        sideDisabled: true,
-        bottomDisabled: true,
+        sideDisabled: sideDisabled,
+        bottomDisabled: bottomDisabled,
         portalLayoutDisabled: true,
-        fullSelector: '#main .link-detail-view.parent-' + parentScope + '-' + parentId,
-        buttonsDisabled: false,
-        // buttonList:['edit']
-        // buttonEditList
-        dropdownEditItemList: []
-        //editModeDisabled
-        // confirmLeaveDisabled
-        // readOnly
-        // inlineEditDisabled
-        // navigateButtonsDisabled
-        //focusForCreate
+        fullSelector: '#main .link-detail-view.field-' + Espo.Utils.toDom(this.idName),
+        buttonsDisabled: buttonsDisabled,
+        editModeDisabled: editModeDisabled,
+        readOnly: readOnly,
+        inlineEditDisabled: inlineEditDisabled
       };
-
       this.createView('recordDetail', convertEntityViewName, option, view => {
         view.dropdownItemList = [];
         console.log(view);
