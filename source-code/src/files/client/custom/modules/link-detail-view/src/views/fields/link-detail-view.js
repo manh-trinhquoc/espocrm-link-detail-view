@@ -5,7 +5,6 @@ console.log("LinkDetailView");
 class LinkDetailView extends LinkFieldView {
 
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
-    // editTemplate = 'fields/link/edit';
     editTemplate = 'link-detail-view:fields/link-detail-view/edit';
 
 

@@ -10,7 +10,6 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
   console.log("LinkDetailView");
   class LinkDetailView extends _link.default {
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
-    // editTemplate = 'fields/link/edit';
     editTemplate = 'link-detail-view:fields/link-detail-view/edit';
     data() {
       return {

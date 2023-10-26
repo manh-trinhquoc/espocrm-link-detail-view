@@ -1,11 +1,13 @@
 ## Overview
 
 - hiển thị màn detail của link vào cùng 1 màn
-- cấu hình riêng cho màn detail ở trong detail khác
 - Inline edit, edit riêng cho entity
-- thử nghiệm với Bpmn process
 
 ## Hướng triển khai
-- Tạo 1 field custom link-detail-view extend từ trường link:  "views/fields/link"
-- tham khảo màn convert lead để hiểu cách gọi màn record detail: crm:views/lead/convert
-- tham khảo màn modal để xem cách gọi detail-small: 
+- Tạo 1 view custom link-detail-view extend từ trường link:  "views/fields/link".
+- Cấu hình trường link sử dụng view custom này
+
+## Tham khảo
+- Tham khảo code và các options có thể truyền cho view:
+    - view/field/base
+    - view/record/base

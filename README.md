@@ -1,8 +1,6 @@
-# Proof of concept project
+# Extension (require backend config)
 - hiển thị màn detail của link vào cùng 1 màn
-- cấu hình riêng cho màn detail ở trong detail khác
 - Inline edit, edit riêng cho entity
-- thử nghiệm với Bpmn process
 
 ## Workflow
 1. create sub branch, finish the feature and create merge request
