@@ -1,0 +1,10 @@
+{
+    "scriptList": [
+        "__APPEND__",
+        "client/custom/modules/link-detail-view/lib/init.js"
+    ],
+    "cssList": [
+        "__APPEND__",
+        "client/custom/modules/link-detail-view/css/link-detail-view.css"
+    ]
+}

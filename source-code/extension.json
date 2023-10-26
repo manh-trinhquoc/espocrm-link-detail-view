@@ -3,7 +3,7 @@
     "name": "Link Detail View",
     "description": "Show detail of a link field in the same view.",
     "author": "manhtq",
-    "bundled": false,
+    "bundled": true,
     "acceptableVersions": [
         ">=7.3.0"
     ],
