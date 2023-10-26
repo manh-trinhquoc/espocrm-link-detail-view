@@ -1,7 +1,5 @@
 import LinkFieldView from 'views/fields/link';
 
-console.log("LinkDetailView");
-
 class LinkDetailView extends LinkFieldView {
 
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
@@ -101,14 +99,30 @@ class LinkDetailView extends LinkFieldView {
         };
         this.createView('recordDetail', convertEntityViewName, option, view => {
             view.dropdownItemList = [];
-            console.log(view);
+            view.selectTab = function (tab) {
+                this.currentTab = tab;
+                $('.popover.in').removeClass('in');
+                this.whenRendered().then(() => {
+
+                    this.$el.find('.middle-tabs > button').removeClass('active link-detail-view-active');
+                    this.$el.find(`.middle-tabs > button[data-tab="${tab}"]`).addClass('active link-detail-view-active');
+                    this.$el.find('.middle > .panel[data-tab]').addClass('tab-hidden link-detail-view-hidden');
+                    this.$el.find(`.middle > .panel[data-tab="${tab}"]`).removeClass('tab-hidden link-detail-view-hidden');
+                    this.adjustMiddlePanels();
+                    this.recordHelper.trigger('panel-show');
+                });
+                this.storeTab();
+            }
             view.render().then(() => {
+                view.selectTab(0);
                 view.$el.find('.middle-tabs > button').click((e) => {
                     let tab = parseInt($(e.currentTarget).attr('data-tab'));
                     view.selectTab(tab);
                     e.stopPropagation();
-
                 });
+            });
+            view.listenTo(model, 'sync', () => {
+                this.model.set(this.nameName, model.get('name'));
             });
         });
     }

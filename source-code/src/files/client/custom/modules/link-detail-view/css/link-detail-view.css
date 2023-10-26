@@ -1,0 +1,24 @@
+.record .link-detail-view .panel.tab-hidden {
+  display: block;
+}
+.record .link-detail-view .panel.link-detail-view-hidden {
+  display: none;
+}
+.record .link-detail-view .btn-group > .btn-text.active:after {
+  display: none;
+}
+.record .link-detail-view .btn-group > .btn-text.link-detail-view-active:after {
+  position: absolute;
+  bottom: -2px;
+  right: 50%;
+  width: 100%;
+  content: "";
+  border-radius: var(--border-radius);
+  transform: translate(50%, -50%);
+  background-color: var(--gray-light);
+  height: 1px;
+  display: block;
+}
+.record .link-detail-view .btn-group > .btn-text.link-detail-view-active:after {
+  display: block;
+}

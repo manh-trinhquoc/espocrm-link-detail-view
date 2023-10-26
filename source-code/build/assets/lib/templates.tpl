@@ -1,4 +1,4 @@
-_delimiter_wiffkigymqe
+_delimiter_unlleafh39
 custom/modules/link-detail-view/res/templates/fields/link-detail-view/edit.tpl
 <div class="input-group">
 	<input class="main-element form-control" type="text" data-name="{{nameName}}" value="{{nameValue}}" autocomplete="espo-{{name}}" placeholder="{{translate 'Select'}}" spellcheck="false">
@@ -20,7 +20,7 @@ custom/modules/link-detail-view/res/templates/fields/link-detail-view/edit.tpl
 
 <div style="padding:5px; position:relative;" class="link-detail-view field-{{fieldName}}"></div>
 
-_delimiter_wiffkigymqe
+_delimiter_unlleafh39
 custom/modules/link-detail-view/res/templates/fields/link-detail-view/detail.tpl
 {{#if url}}
 	{{#if iconHtml}}

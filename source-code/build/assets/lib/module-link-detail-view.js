@@ -7,7 +7,6 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
   _exports.default = void 0;
   _link = _interopRequireDefault(_link);
   function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-  console.log("LinkDetailView");
   class LinkDetailView extends _link.default {
     detailTemplate = 'link-detail-view:fields/link-detail-view/detail';
     editTemplate = 'link-detail-view:fields/link-detail-view/edit';
@@ -88,13 +87,29 @@ define("modules/link-detail-view/views/fields/link-detail-view", ["exports", "vi
       };
       this.createView('recordDetail', convertEntityViewName, option, view => {
         view.dropdownItemList = [];
-        console.log(view);
+        view.selectTab = function (tab) {
+          this.currentTab = tab;
+          $('.popover.in').removeClass('in');
+          this.whenRendered().then(() => {
+            this.$el.find('.middle-tabs > button').removeClass('active link-detail-view-active');
+            this.$el.find(`.middle-tabs > button[data-tab="${tab}"]`).addClass('active link-detail-view-active');
+            this.$el.find('.middle > .panel[data-tab]').addClass('tab-hidden link-detail-view-hidden');
+            this.$el.find(`.middle > .panel[data-tab="${tab}"]`).removeClass('tab-hidden link-detail-view-hidden');
+            this.adjustMiddlePanels();
+            this.recordHelper.trigger('panel-show');
+          });
+          this.storeTab();
+        };
         view.render().then(() => {
+          view.selectTab(0);
           view.$el.find('.middle-tabs > button').click(e => {
             let tab = parseInt($(e.currentTarget).attr('data-tab'));
             view.selectTab(tab);
             e.stopPropagation();
           });
+        });
+        view.listenTo(model, 'sync', () => {
+          this.model.set(this.nameName, model.get('name'));
         });
       });
     }
